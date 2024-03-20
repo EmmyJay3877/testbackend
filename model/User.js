@@ -18,8 +18,7 @@ const userSchema = new Schema({
     refreshToken: {
         type: String,
         validate: [validator.isJWT, 'invalid token!']
-    },
-    posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+    }
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) { //run this funtion if password was modified

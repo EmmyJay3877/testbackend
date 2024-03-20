@@ -5,6 +5,11 @@ const tryCatch = require('../utils/tryCatch');
 
 router.route('/')
     .post(tryCatch(postController.createPost))
+    .get(tryCatch(postController.getPosts))
+
+router.route('/:id')
+    .get(tryCatch(postController.getPost))
+    .delete(tryCatch(postController.deletePost))
 
 
 module.exports = router

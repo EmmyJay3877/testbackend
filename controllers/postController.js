@@ -3,26 +3,48 @@ const User = require('../model/User');
 
 const createPost = async (req, res) => {
     const { text } = req.body;
-    if (!text) throw new customError('Post is empty', 400);
+    if (!text) throw Error('Post is empty', 400);
 
     // create a new post
     const newPost = await Post.create({
-        "profile": req.user._id,
         "text": text,
     });
 
     if (newPost) {
-        // updating the post array in the User document
-        const userUpdate = await User.updateOne({ "_id": req.user._id }, { $push: { posts: { $each: [newPost._id] } } });
-
-        // checking if the User document was updated
-        if (userUpdate.matchedCount > 0 && userUpdate.modifiedCount > 0) {
-            res.status(201).json({ "success": `${req.user.username} just made a post` })
-        };
+        res.status(201).json({ "success": `a new post was created` })
     };
 
 }
 
-module.exports = { createPost };
+const getPosts = async (req, res) => {
+    const posts = await Post.find();
+    if (!posts) throw Error('No posts found.', 204);
+
+    console.log(posts);
+
+    res.json(posts);
+}
+
+const getPost = async (req, res) => {
+    const post = await Post.findOne({ _id: req.params.id }).exec();
+    if (!post) throw Error(`No post matches ID ${req.params.id}`, 404);
+
+    res.json(post);
+}
+
+const deletePost = async (req, res) => {
+    if (!req?.params?.id) throw new customError('Post id is required', 403);
+
+    const post = await Post.findOne({ _id: req.params.id }).exec();
+    if (!post) throw new customError(`No Post matches ID ${req.params.id}`, 404);
+
+    const result = await post.deleteOne();
+
+    if (result) {
+        return res.status(200).json({ "success": `Post with ID ${req.params.id} has been deleted.`});
+    };
+}
+
+module.exports = { createPost, getPosts, getPost, deletePost };
 
 
