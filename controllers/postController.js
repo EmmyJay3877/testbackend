@@ -33,10 +33,10 @@ const getPost = async (req, res) => {
 }
 
 const deletePost = async (req, res) => {
-    if (!req?.params?.id) throw new customError('Post id is required', 403);
+    if (!req?.params?.id) throw Error('Post id is required', 403);
 
     const post = await Post.findOne({ _id: req.params.id }).exec();
-    if (!post) throw new customError(`No Post matches ID ${req.params.id}`, 404);
+    if (!post) throw Error(`No Post matches ID ${req.params.id}`, 404);
 
     const result = await post.deleteOne();
 

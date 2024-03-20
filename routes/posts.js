@@ -11,5 +11,4 @@ router.route('/:id')
     .get(tryCatch(postController.getPost))
     .delete(tryCatch(postController.deletePost))
 
-
 module.exports = router

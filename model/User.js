@@ -30,4 +30,9 @@ userSchema.pre('save', async function (next) { //run this funtion if password wa
     next();
 });
 
+// create a user instance method, which is available for all documents in the user collection.
+userSchema.methods.comparePassword = async function (candidatePassword, userPassword) {
+    return await bcrypt.compare(candidatePassword, userPassword);
+};
+
 module.exports = mongoose.model('User', userSchema);

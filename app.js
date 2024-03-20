@@ -14,6 +14,11 @@ app.get('/', (req, res) => {
 // register a user
 app.use('/register', require('./routes/register'));
 
+//login a user
+app.use('/login', require('./routes/auth'));
+
+//users route
+app.use('/users', require('./routes/users'));
 
 app.use('/posts', require('./routes/posts'));
 
