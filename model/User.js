@@ -13,7 +13,7 @@ const userSchema = new Schema({
         type: String,
         required: [true, 'Password is required!'],
         minlength: [8, 'Password should be more than 8 characters!'],
-        select: false //pswrd will never show up in any output
+        select: false //password will not show up in any output
     },
     refreshToken: {
         type: String,
@@ -30,10 +30,5 @@ userSchema.pre('save', async function (next) { //run this funtion if password wa
     this.passwordConfirm = undefined;
     next();
 });
-
-// create a user instance method, which is available for all documents in the user collection.
-userSchema.methods.comparePassword = async function (candidatePassword, userPassword) {
-    return await bcrypt.compare(candidatePassword, userPassword);
-};
 
 module.exports = mongoose.model('User', userSchema);
